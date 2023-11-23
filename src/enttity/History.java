@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package entity;
+package enttity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -12,16 +12,16 @@ import java.util.Objects;
  */
 public class History implements Serializable{
     private Product product;
-    private Buyer buyer;
-    private Date sellProducttoBuyerDate;
+    private Customer customer;
+    private Date sellProducttoCustomerDate;
     private Date returnProduct;
  public History() {
     }
 
-    public History(Product product, Buyer buyer, Date sellProducttoBuyerDate, Date returnProduct) {
+    public History(Product product, Customer customer, Date sellProducttoCustomerDate, Date returnProduct) {
         this.product = product;
-        this.buyer = buyer;
-        this.sellProducttoBuyerDate = sellProducttoBuyerDate;
+        this.customer = customer;
+        this.sellProducttoCustomerDate = sellProducttoCustomerDate;
         this.returnProduct = returnProduct;
     }
 
@@ -41,28 +41,28 @@ public class History implements Serializable{
         this.product = product;
     }
 
-    public Buyer getBuyer() {
-        return buyer;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setBuyer(Buyer buyer) {
-        this.buyer = buyer;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public Date getSellProductToBuyerDate() {
-        return sellProducttoBuyerDate;
+    public Date getSellProductToCustomerDate() {
+        return sellProducttoCustomerDate;
     }
 
-    public void setSellProductToBuyerDate(Date sellProducttoBuyerDate) {
-        this.sellProducttoBuyerDate = sellProducttoBuyerDate;
+    public void setSellProductToCustomerDate(Date sellProducttoCustomerDate) {
+        this.sellProducttoCustomerDate = sellProducttoCustomerDate;
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
         hash = 17 * hash + Objects.hashCode(this.product);
-        hash = 17 * hash + Objects.hashCode(this.buyer);
-        hash = 17 * hash + Objects.hashCode(this.sellProducttoBuyerDate);
+        hash = 17 * hash + Objects.hashCode(this.customer);
+        hash = 17 * hash + Objects.hashCode(this.sellProducttoCustomerDate);
         hash = 17 * hash + Objects.hashCode(this.returnProduct);
         return hash;
     }
@@ -82,10 +82,10 @@ public class History implements Serializable{
         if (!Objects.equals(this.product, other.product)) {
             return false;
         }
-        if (!Objects.equals(this.buyer, other.buyer)) {
+        if (!Objects.equals(this.customer, other.customer)) {
             return false;
         }
-        if (!Objects.equals(this.sellProducttoBuyerDate, other.sellProducttoBuyerDate)) {
+        if (!Objects.equals(this.sellProducttoCustomerDate, other.sellProducttoCustomerDate)) {
             return false;
         }
         if (!Objects.equals(this.returnProduct, other.returnProduct)) {
@@ -98,9 +98,9 @@ public class History implements Serializable{
     public String toString() {
         return "History " 
                 + "Product " + product.getTitle()
-                + ", Buyer" + buyer.getFirstname()
-                + " " + buyer.getLastname()
-                + ", Sold Product" + sellProducttoBuyerDate 
+                + ", Customer" + customer.getFirstname()
+                + " " + customer.getLastname()
+                + ", Sold Product" + sellProducttoCustomerDate 
                 + ", Return product " + returnProduct 
                 + ' ';
     }

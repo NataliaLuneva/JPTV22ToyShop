@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package tools;
+package tooks;
 import java.util.Scanner;
 /**
  *
@@ -56,8 +56,8 @@ public class InputFromKeyboard {
             System.out.println("For continue press \"y\", to exsit press \"n\"");
         }while(true);
     }
-        public static boolean askForBuyerUpdate() {
-        System.out.println("Do you want to update buyers? (y/n)");
+        public static boolean askForCustomerUpdate() {
+        System.out.println("Do you want to update customers? (y/n)");
         String сhoice = inputSymbolYesOrNo();
         return сhoice.equals("y");
     }

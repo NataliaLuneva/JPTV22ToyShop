@@ -3,20 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jptv22toyshop;
+package jptv22toyShop;
 
-/**
- *
- * @author pupil
- */
+
 public class JPTV22ToyShop {
-
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        App app;
-        app = new App();
+     public static void main(String[] args) {
+        App app = new App();    
         app.run();
     }
     

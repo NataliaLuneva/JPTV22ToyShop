@@ -2,19 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package entity;
+package enttity;
 import java.util.Objects;
 import java.io.Serializable;
 
-public class Buyer implements Serializable {
+public class Customer implements Serializable {
     private String firstname;
     private String lastname;
     private String phone;
     private int balance;  // Change to int for balance
 
-    public Buyer() {
+    public Customer() {
     }
-
 
     public void addToBalance(int replenishAmount) {
         if (replenishAmount > 0) {
@@ -53,7 +52,7 @@ public class Buyer implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Buyer other = (Buyer) obj;
+        final Customer other = (Customer) obj;
         if (!Objects.equals(this.firstname, other.firstname)) {
             return false;
         }
@@ -91,7 +90,7 @@ public class Buyer implements Serializable {
     }
  @Override
     public String toString() {
-        return "Buyer " 
+        return "Customer " 
                 + " " + firstname 
                 + " " + lastname 
                 + ", phone " + phone 

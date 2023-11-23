@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package managers;
-import entity.Buyer;
-import entity.Product;
-import entity.History;
+package Managers;
+import enttity.Product;
+import enttity.History;
+import enttity.Customer;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -15,11 +15,10 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SaveManager {
+public class SavingManager {
     private final String PRODUCT_FILENAME = "products";
     private final String CUSTOMER_FILENAME = "customers";
     private final String HISTORY_FILENAME = "histories";
-    private final String BUYER_FILENAME = "buyers";
     public void saveProducts(List<Product> products){
         FileOutputStream fos;
         ObjectOutputStream oos;
@@ -51,11 +50,11 @@ public class SaveManager {
         }
         return products;
     }
-    public void saveBuyers(List<Buyer> readers){
+    public void saveCustomers(List<Customer> readers){
         FileOutputStream fos;
         ObjectOutputStream oos;
         try {
-            fos = new FileOutputStream(BUYER_FILENAME);
+            fos = new FileOutputStream(CUSTOMER_FILENAME);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(readers);
             oos.flush();
@@ -66,14 +65,14 @@ public class SaveManager {
         }
 
     }
-    public List<Buyer> loadBuyers(){
-        List<Buyer> buyers = new ArrayList<>();
+    public List<Customer> loadCustomers(){
+        List<Customer> customers = new ArrayList<>();
         FileInputStream fis;
         ObjectInputStream ois;
         try {
-            fis = new FileInputStream(BUYER_FILENAME);
+            fis = new FileInputStream(CUSTOMER_FILENAME);
             ois = new ObjectInputStream(fis);
-            buyers = (List<Buyer>) ois.readObject();
+            customers = (List<Customer>) ois.readObject();
         } catch (FileNotFoundException ex) {
             System.out.println("File not fount");
         } catch (IOException ex) {
@@ -81,7 +80,7 @@ public class SaveManager {
         } catch (ClassNotFoundException ex) {
             System.out.println("Class not found");
         }
-        return buyers;
+        return customers;
     }
     public void saveHistories(List<History> histories){
         FileOutputStream fos;

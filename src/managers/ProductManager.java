@@ -1,11 +1,13 @@
 
-package managers;
+package Managers;
 
-import entity.Buyer;
-import entity.Product;
+import enttity.Author;
+import enttity.Customer;
+import enttity.Product;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import tools.InputFromKeyboard;
+import tooks.InputFromKeyboard;
 
 
 /**
@@ -26,14 +28,16 @@ public class ProductManager {
         
         System.out.print("Enter title: ");
         product.setTitle(scanner.nextLine());
-        
+        System.out.print("Enter published year: ");
+        product.setPublishedYear(InputFromKeyboard.inputNumberFromRange(1800, 2050));
 
-        System.out.print("How many toys: ");
-        int countBuyers = InputFromKeyboard.inputNumberFromRange(1, 5);
-        for (int i = 0; i < countBuyers; i++) {
-            System.out.printf("Toy %d:%n", i + 1);
+        System.out.print("How many products: ");
+        int countAuthors = InputFromKeyboard.inputNumberFromRange(1, 10);
+        for (int i = 0; i < countAuthors; i++) {
+            System.out.printf("Author %d:%n", i + 1);
             System.out.print("Enter firstname: ");
-            String buyerFirstname = scanner.nextLine();
+            String authorFirstname = scanner.nextLine();
+            product.addAuthor(new Author(authorFirstname));
         }
 
         System.out.print("Enter quantity copy: ");
@@ -54,22 +58,24 @@ public void updateProducts(List<Product> products) {
             System.out.println("Enter new data for the product:");
             System.out.print("Title: ");
             productToUpdate.setTitle(scanner.nextLine());
-            System.out.print("Published Price: ");
+            System.out.print("Published Year: ");
+            productToUpdate.setPublishedYear(InputFromKeyboard.inputNumberFromRange(1800, 2050));
 
-            System.out.print("Buyers (separate authors with comma): ");
-            String buyersInput = scanner.nextLine();
-            String[] buyersArray = buyersInput.split(","); 
+            System.out.print("Authors (separate authors with comma): ");
+            String authorsInput = scanner.nextLine();
+            String[] authorsArray = authorsInput.split(","); 
             
-            Buyer[] buyers = new Buyer[buyersArray.length]; 
-            for (int i = 0; i < buyersArray.length; i++) {
-                String[] buyersNames = buyersArray[i].trim().split(" ");
-                if (buyersNames.length == 2) {
+            Author[] authors = new Author[authorsArray.length]; 
+            for (int i = 0; i < authorsArray.length; i++) {
+                String[] authorNames = authorsArray[i].trim().split(" ");
+                if (authorNames.length == 2) {
+                    authors[i] = new Author(authorNames[0]);
                 } else {
-                    System.out.println("Invalid author format for: " + buyersArray[i]);
+                    System.out.println("Invalid author format for: " + authorsArray[i]);
                 }
             }
 
-            productToUpdate.setBuyers(buyers);
+            productToUpdate.setAuthors(authors);
             
             System.out.print("Quantity: ");
             productToUpdate.setQuantity(InputFromKeyboard.inputNumberFromRange(1, 10));
@@ -108,6 +114,8 @@ public void updateProducts(List<Product> products) {
             System.out.printf("%d. %s. %d. %s. In stock: %d.  Price: %d%n",
                     i + 1,
                     products.get(i).getTitle(),
+                    products.get(i).getPublishedYear(),
+                    Arrays.toString(products.get(i).getAuthors()),
                     products.get(i).getCount(),
                     products.get(i).getPrice()
             );

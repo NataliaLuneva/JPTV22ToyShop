@@ -3,56 +3,52 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jptv22toyshop;
+package jptv22toyShop;
 
-import managers.BuyerManager;
-import managers.HistoryManager;
-import managers.ProductManager;
-import managers.SaveManager;
-import entity.Buyer;
-import entity.History;
-import entity.Product;
+import Managers.CustomerManager;
+import Managers.HistoryManager;
+import Managers.ProductManager;
+import Managers.SavingManager;
+import enttity.Customer;
+import enttity.History;
+import enttity.Product;
 import java.util.List;
 import java.util.Scanner;
-import managers.BuyerManager;
-import managers.HistoryManager;
-import managers.ProductManager;
-import managers.SaveManager;
-import tools.InputFromKeyboard;
+import tooks.InputFromKeyboard;
 
 public class App {
     private final Scanner scanner;
-    private  List<Product> products;
-    private  List <Buyer> buyers;
-    private  List<History> histories;
-    private  ProductManager productManager;
-    private  BuyerManager buyerManager;
-    private  HistoryManager historyManager;
-    private  SaveManager saveManager;
+    private List<Product> products;
+    private List<Customer> customers;
+    private List<History> histories;
+    private ProductManager productManager;
+    private CustomerManager customerManager;
+    private HistoryManager historyManager;
+    private SavingManager saveManager;
 
     public App() {
         this.scanner = new Scanner(System.in);
-        this.saveManager = new SaveManager();
+        this.saveManager = new SavingManager();
         this.products = saveManager.loadProducts();
+        this.customers = saveManager.loadCustomers();
         this.histories = saveManager.loadHistories();
-        this.buyers = saveManager.loadBuyers();
         this.productManager = new ProductManager(scanner);
-        this.buyerManager = new BuyerManager(scanner);
+        this.customerManager = new CustomerManager(scanner);
         this.historyManager = new HistoryManager(scanner);
     }
 
-    public void run() {
+    void run() {
         boolean repeat = true;
         System.out.println("------ Welcome to Toy Shop -------");
         do {
             System.out.println("List tasks:");
             System.out.println("0. Exit");
             System.out.println("1. Add Product");
-            System.out.println("2. Add Buyers");
+            System.out.println("2. Add Customer");
             System.out.println("3. Print list products");
-            System.out.println("4. Print list buyers");
-            System.out.println("5. Sell product to buyers");
-            System.out.println("6. Print selling products");
+            System.out.println("4. Print list customers");
+            System.out.println("5. Sell product to customer");
+            System.out.println("6. Customers By Purchase Count");
             System.out.println("7. Ranking of products being sold");
             System.out.println("8. Top up balance");
             System.out.println("9. Store rating");
@@ -73,8 +69,8 @@ public class App {
                     saveManager.saveProducts(this.products);//save to file
                     break;
                 case 2:
-                    buyers.add(buyerManager.addBuyer());
-                    saveManager.saveBuyers(buyers);
+                    customers.add(customerManager.addCustomer());
+                    saveManager.saveCustomers(customers);
                     break;
                 case 3:
                     productManager.printListProducts(products);
@@ -85,35 +81,35 @@ public class App {
                     }
                     break;
                 case 4:
-                    buyerManager.printListBuyers(buyers);
-                    boolean updateBuyers = InputFromKeyboard.askForBuyerUpdate();
-                    if (updateBuyers) {
-                        buyerManager.updateBuyers(buyers);
-                        saveManager.saveBuyers(buyers);
+                    customerManager.printListCustomers(customers);
+                    boolean updateCustomers = InputFromKeyboard.askForCustomerUpdate();
+                    if (updateCustomers) {
+                        customerManager.updateCustomers(customers);
+                        saveManager.saveCustomers(customers);
                     }
                     break;
                 case 5:
-                    History history = historyManager.sellProductToBuyer(buyers, products);
+                    History history = historyManager.sellProductToCustomer(customers, products);
                     if (history != null) {
                         this.histories.add(history);
                         saveManager.saveHistories(histories);
-                        buyerManager.deductBalanceForProduct(history.getBuyer(), history.getProduct().getPrice());
-                        saveManager.saveBuyers(buyers);
+                        customerManager.deductBalanceForProduct(history.getCustomer(), history.getProduct().getPrice());
+                        saveManager.saveCustomers(customers);
                     }
                     break;
                 case 6:
-                    historyManager.printListSoldProduct(histories);
+                    historyManager.printCustomersByPurchaseCount(histories, customers);
                     break;
                 case 7:
                     historyManager.printRankingOfProductsBeingSold(this.histories);
                     break;
                 case 8:
-                    buyerManager.printListBuyers(buyers);
-                    System.out.print("Enter the number of the buyer to replenish balance: ");
-                    int buyerNumber = InputFromKeyboard.inputNumberFromRange(1, buyers.size());
-                    Buyer selectedBuyer = buyers.get(buyerNumber - 1);
-                    buyerManager.replenishBalance(selectedBuyer);
-                    saveManager.saveBuyers(buyers);
+                    customerManager.printListCustomers(customers);
+                    System.out.print("Enter the number of the customer to replenish balance: ");
+                    int customerNumber = InputFromKeyboard.inputNumberFromRange(1, customers.size());
+                    Customer selectedCustomer = customers.get(customerNumber - 1);
+                    customerManager.replenishBalance(selectedCustomer);
+                    saveManager.saveCustomers(customers);
                     break;
                 case 9:
                     historyManager.calculateTotalSales(histories);

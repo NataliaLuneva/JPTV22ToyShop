@@ -2,41 +2,42 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package managers;
-import entity.Product;
-import entity.History;
-import entity.Buyer;
+package Managers;
+import enttity.Product;
+import enttity.History;
+import enttity.Customer;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-import tools.InputFromKeyboard;
-
+import tooks.InputFromKeyboard;
+import java.util.*;
 
 public class HistoryManager {
 
     private final Scanner scanner;
-    private final BuyerManager buyerManager;
+    private final CustomerManager customerManager;
     private final ProductManager productManager;
 
     public HistoryManager(Scanner scanner) {
         this.scanner = scanner;
-        this.buyerManager = new BuyerManager(scanner);
+        this.customerManager = new CustomerManager(scanner);
         this.productManager = new ProductManager(scanner);
     }
 
-    public History sellProductToBuyer(List<Buyer>buyers, List<Product> products) {
-        System.out.println("------------- Sell the Product to Buyer ----------------");
+    public History sellProductToCustomer(List<Customer>customers, List<Product> products) {
+        System.out.println("------------- Sell the Product to Customer ----------------");
         History history = new History();
 
-        int countBuyersInList = buyerManager.printListBuyers(buyers);
-        System.out.print("Enter number buyer: ");
+        int countCustomersInList = customerManager.printListCustomers(customers);
+        System.out.print("Enter number customer: ");
         int readerNumber = InputFromKeyboard.inputNumberFromRange(1, 
-                countBuyersInList);
-        history.setBuyer(buyers.get(readerNumber - 1));
+                countCustomersInList);
+        history.setCustomer(customers.get(readerNumber - 1));
 
         int countProductsInList = productManager.printListProducts(products);
         System.out.print("Enter number product: ");
@@ -46,7 +47,7 @@ public class HistoryManager {
             history.setProduct(products.get(bookNumber - 1));
             products.get(bookNumber - 1).setCount(products.get
         (bookNumber - 1).getCount() - 1);
-            history.setSellProductToBuyerDate(new 
+            history.setSellProductToCustomerDate(new 
         GregorianCalendar().getTime());
             return history;
         } else {
@@ -55,29 +56,38 @@ public class HistoryManager {
         }
     }
 
+public void printCustomersByPurchaseCount(List<History> histories, List<Customer> customers) {
+    Map<Customer, Integer> customerPurchaseCount = new HashMap<>();
 
-    public int printListSoldProduct(List<History> histories) {
-        int countSoldProduct = 0;
-        System.out.println("List selling products:");
-
-        for (int i = 0; i < histories.size(); i++) {
-            if (histories.get(i).getReturnProduct() == null) {
-                System.out.printf("%d. %s. selling %s %s%n",
-                        i + 1,
-                        histories.get(i).getProduct().getTitle(),
-                        histories.get(i).getBuyer().getFirstname(),
-                        histories.get(i).getBuyer().getLastname()
-                );
-                countSoldProduct++;
+    // Подсчитываем количество покупок для каждого покупателя
+    for (History history : histories) {
+        Customer currentCustomer = history.getCustomer();
+        if (history.getReturnProduct() == null) {
+            if (customerPurchaseCount.containsKey(currentCustomer)) {
+                customerPurchaseCount.put(currentCustomer, customerPurchaseCount.get(currentCustomer) + 1);
+            } else {
+                customerPurchaseCount.put(currentCustomer, 1);
             }
         }
-
-        if (countSoldProduct < 1) {
-            System.out.println("\tNo products to sell");
-        }
-
-        return countSoldProduct;
     }
+
+    // Сортируем покупателей по количеству покупок
+    Map<Customer, Integer> sortedCustomersByPurchaseCount = customerPurchaseCount.entrySet()
+            .stream()
+            .sorted(Map.Entry.<Customer, Integer>comparingByValue().reversed())
+            .collect(Collectors.toMap(
+                    Map.Entry::getKey,
+                    Map.Entry::getValue,
+                    (oldValue, newValue) -> oldValue,
+                    LinkedHashMap::new));
+
+    System.out.println("Customers by purchase count:");
+    int count = 1;
+    for (Map.Entry<Customer, Integer> entry : sortedCustomersByPurchaseCount.entrySet()) {
+        System.out.printf("%d. %s %s - Number of purchases: %d%n",
+                count++, entry.getKey().getFirstname(), entry.getKey().getLastname(), entry.getValue());
+    }
+}
 
     public void printRankingOfProductsBeingSold(List<History> histories) {
         Map<Product, Integer> mapProducts = new HashMap<>();
